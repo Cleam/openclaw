@@ -139,15 +139,16 @@ flowchart TD
     BIND -->|匹配 channel| AGENT_3[Agent C]
     BIND -->|无匹配| DEFAULT[默认 Agent]
 
-    subgraph 路由优先级（从高到低）
-        P1[1. peer 精确匹配]
-        P2[2. parentPeer 继承]
-        P3[3. guildId + roles]
-        P4[4. guildId]
-        P5[5. teamId]
-        P6[6. accountId 匹配]
-        P7[7. channel 级匹配]
-        P8[8. 默认 Agent]
+    %% 修正后的子图，去掉了标题中的括号
+    subgraph Priority [路由优先级 - 从高到低]
+        direction TB
+        P1[1. peer 精确匹配] --> P2[2. parentPeer 继承]
+        P2 --> P3[3. guildId + roles]
+        P3 --> P4[4. guildId]
+        P4 --> P5[5. teamId]
+        P5 --> P6[6. accountId 匹配]
+        P6 --> P7[7. channel 级匹配]
+        P7 --> P8[8. 默认 Agent]
     end
 ```
 
