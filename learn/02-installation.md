@@ -11,7 +11,7 @@
 | 要求 | 说明 |
 |------|------|
 | **Node.js** | 24（推荐）或 22.16+（LTS 兼容） |
-| **操作系统** | macOS、Linux、Windows（通过 WSL2，强烈推荐） |
+| **操作系统** | macOS、Linux、Windows（原生 Windows 与 WSL2 都支持，WSL2 体验通常更稳定） |
 | **包管理器** | npm、pnpm 或 bun 均可 |
 | **AI 模型 API Key** | 至少一个模型提供商的 API 密钥 |
 | **约 5 分钟** | 完成基本安装和配置 |
@@ -80,14 +80,22 @@ cd openclaw
 # 安装依赖（推荐 pnpm）
 pnpm install
 
-# 构建
+# 构建前端与主程序
+pnpm ui:build
 pnpm build
 
 # 以开发模式运行
 pnpm openclaw --help
-# 或
-pnpm dev
+
+# 常用热重载开发循环
+pnpm gateway:watch
 ```
+
+补充说明：
+
+- `pnpm openclaw ...` 适合直接运行 TypeScript 源码
+- `pnpm build` 会产出 `dist/`，更接近发布包运行方式
+- `bun` 仍可用于直接执行部分 TypeScript 脚本，但从源码完整开发时优先推荐 `pnpm`
 
 ### 方式四：Docker 安装
 
@@ -247,7 +255,7 @@ source ~/.bashrc
 
 ### Q: Windows 上如何安装？
 
-强烈推荐使用 WSL2（Windows Subsystem for Linux）：
+现在 **原生 Windows 和 WSL2 都支持**，但如果你要跑更完整的开发流、脚本和部分周边工具，WSL2 通常更稳：
 
 ```powershell
 # 安装 WSL2

@@ -6,7 +6,7 @@
 
 ## 6.1 通道概述
 
-OpenClaw 支持 20+ 个聊天平台作为消息通道（Channel）。通道分为两类：
+OpenClaw 支持 20+ 个聊天平台作为消息通道（Channel）。随着上游继续迭代，除了常见 IM 通道，还新增了更偏工程化和区域化的通道页面。通道大致分为三类：
 
 ```mermaid
 flowchart TB
@@ -21,7 +21,7 @@ flowchart TB
         IR[IRC]
     end
 
-    subgraph 插件通道 Plugin
+    subgraph 插件 / 扩展通道 Plugin
         MT[Microsoft Teams]
         MX[Matrix]
         MM[Mattermost]
@@ -34,8 +34,20 @@ flowchart TB
         TL[Tlon]
         TW[Twitch]
         ZA[Zalo]
+        QQ[QQ Bot]
+    end
+
+    subgraph 特殊用途通道
+        QA[QA Channel<br/>自动化测试专用]
     end
 ```
+
+### 新增通道补充
+
+| 通道 | 定位 | 适合谁 |
+|------|------|--------|
+| **QQ Bot** | 面向 QQ 官方 Bot API 的正式聊天通道 | 需要接入 QQ 生态的用户 |
+| **QA Channel** | 合成（synthetic）测试通道，不是生产通道 | 做自动化测试、E2E、场景回放的开发者 |
 
 ## 6.2 WhatsApp 配置
 
@@ -292,6 +304,68 @@ openclaw config set channels.discord.enabled true --strict-json
 - 右键频道名 → Copy Channel ID
 
 ## 6.5 其他通道速览
+
+### QQ Bot（新补充）
+
+QQ Bot 通过 **官方 QQ Bot API（WebSocket Gateway）** 接入，支持：
+
+- C2C 私聊
+- 群聊 @ 消息
+- Guild / 频道消息
+- 图片、语音、视频、文件等富媒体
+
+最小配置示例：
+
+```json5
+{
+  channels: {
+    qqbot: {
+      enabled: true,
+      appId: "YOUR_APP_ID",
+      clientSecret: "YOUR_APP_SECRET",
+    },
+  },
+}
+```
+
+CLI 添加方式：
+
+```bash
+openclaw channels add --channel qqbot --token "AppID:AppSecret"
+```
+
+多账号示例：
+
+```json5
+{
+  channels: {
+    qqbot: {
+      enabled: true,
+      appId: "111111111",
+      clientSecret: "secret-of-bot-1",
+      accounts: {
+        bot2: {
+          enabled: true,
+          appId: "222222222",
+          clientSecret: "secret-of-bot-2",
+        },
+      },
+    },
+  },
+}
+```
+
+### QA Channel（测试专用）
+
+`qa-channel` 是一个**合成测试通道**，不是给普通用户接聊天用的，而是给开发者做自动化验收、回归测试和场景调试用的。
+
+它的价值在于：
+
+- 目标地址语法稳定（如 `dm:<user>`、`channel:<room>`、`thread:<room>/<thread>`）
+- 可以做入站消息注入、出站消息捕获、reaction / edit / delete / search 等测试
+- 可以跑确定性的 QA 套件，而不是依赖真实聊天平台
+
+如果你只是普通使用者，可以把它理解为：**OpenClaw 团队自己给 OpenClaw 做集成测试的专用“假通道”**。
 
 ### Signal
 

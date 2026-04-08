@@ -109,7 +109,7 @@ flowchart TD
 
 ## 7.3 记忆系统（Memory）
 
-OpenClaw 提供多层次的记忆管理：
+OpenClaw 提供多层次的记忆管理。这里要补充一个新版思路：**记忆文件依然是源数据，但检索、索引和搜索能力现在通常由“记忆插件/记忆引擎”提供**。
 
 ```mermaid
 flowchart TD
@@ -132,8 +132,21 @@ flowchart TD
 
 | 文件 | 类型 | 说明 |
 |------|------|------|
-| `MEMORY.md` | 长期记忆 | 手动维护的关键信息，仅主/私聊会话加载 |
+| `MEMORY.md` | 长期记忆 | 手动维护的关键信息，仅主私聊主上下文加载 |
+| `memory.md` | 长期记忆别名 | 若与 `MEMORY.md` 同时存在，两者都可加载，且会按真实路径去重 |
 | `memory/YYYY-MM-DD.md` | 每日记忆 | 追加写入，自动加载今天和昨天 |
+
+### 记忆插件 / 引擎
+
+当前默认思路可以理解成：
+
+- 工作区里的 Markdown 文件负责“存什么”
+- 记忆插件 / 记忆引擎负责“怎么索引、怎么搜”
+
+默认通常是：
+
+- **memory slot**：`memory-core`
+- 如果你想完全关闭记忆插件，可设置 `plugins.slots.memory = "none"`
 
 ### 记忆工具
 
@@ -141,6 +154,12 @@ flowchart TD
 |------|------|
 | `memory_search` | 基于向量索引的语义搜索 |
 | `memory_get` | 读取特定记忆文件的指定行 |
+
+补充细节：
+
+- `memory_get` 对“不存在的文件”现在会**优雅降级**
+- 例如今天的 `memory/YYYY-MM-DD.md` 还没生成时，不会直接抛 `ENOENT` 报错
+- 这让 Agent 可以自然处理“今天还没有任何记录”的情况
 
 ### 自动记忆刷新（Memory Flush）
 
@@ -198,6 +217,42 @@ OpenClaw 支持构建本地向量索引用于语义搜索：
 - MMR 多样性重排序
 - 时间衰减加权
 ```
+
+### Builtin Memory Engine（新版重点）
+
+当前默认内建记忆引擎可以把它理解为：
+
+- **存储后端**：每个 Agent 一个 SQLite 数据库
+- **关键词检索**：FTS5 / BM25
+- **向量检索**：Embedding
+- **混合检索**：关键词 + 向量并行，再做加权合并
+- **CJK 友好**：对中文、日文、韩文有专门的分词支持
+
+常见配置示例：
+
+```json5
+{
+  agents: {
+    defaults: {
+      memorySearch: {
+        provider: "openai", // 也可以是 gemini / ollama / local / mistral ...
+        query: {
+          hybrid: {
+            mmr: { enabled: true },
+            temporalDecay: { enabled: true },
+          },
+        },
+      },
+    },
+  },
+}
+```
+
+你可以把它理解成：
+
+> `memory_search` 不只是“搜 Markdown 文件”，而是“先把记忆切片、建索引，再同时做语义匹配和关键词匹配”。
+
+这对中文教程读者尤其重要，因为新版 builtin engine 已经明确考虑了 **CJK 文本检索**，对中文记忆更友好。
 
 ## 7.4 技能系统（Skills）
 

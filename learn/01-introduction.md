@@ -6,7 +6,7 @@
 
 ## 1.1 什么是 OpenClaw？
 
-**OpenClaw** 是一个开源的、自托管（self-hosted）的**个人 AI 助手网关**。简单来说，它是一个"中间人"——连接你日常使用的聊天软件（WhatsApp、Telegram、Discord、微信等）和 AI 模型（如 Claude、GPT、Gemini 等），让你可以在任何聊天应用中与 AI 助手对话。
+**OpenClaw** 是一个开源的、自托管（self-hosted）的**个人 AI 助手网关**。简单来说，它是一个“中间层”——连接你日常使用的聊天软件（WhatsApp、Telegram、Discord、QQ Bot、WebChat 等）和 AI 模型（如 Claude、GPT、Gemini 等），让你可以在任何聊天应用中与 AI 助手对话。
 
 > 🦞 OpenClaw 的口号是 "EXFOLIATE! EXFOLIATE!"（一只太空龙虾的名言）
 
@@ -43,7 +43,7 @@ mindmap
 | 特性 | 说明 |
 |------|------|
 | **自托管 (Self-hosted)** | 运行在你自己的设备上，数据完全由你掌控 |
-| **多通道 (Multi-channel)** | 一个 Gateway 同时服务 WhatsApp、Telegram、Discord 等 20+ 个聊天平台 |
+| **多通道 (Multi-channel)** | 一个 Gateway 同时服务 WhatsApp、Telegram、Discord、Slack、QQ Bot 等 20+ 个聊天平台 |
 | **Agent 原生** | 专为 AI Agent（智能体）设计，支持工具调用、会话隔离、多 Agent 路由 |
 | **开源** | MIT 许可证，社区驱动开发 |
 
@@ -111,10 +111,10 @@ Channel 是指具体的聊天平台连接。OpenClaw 支持两类通道：
 - WhatsApp（通过 Baileys 库）
 - Telegram（通过 grammY 库）
 - Discord（通过官方 Discord Gateway）
-- Signal、iMessage、Slack、Google Chat、IRC 等
+- Signal、iMessage、Slack、Google Chat、IRC、WebChat 等
 
 **插件通道（Plugin）：**
-- Microsoft Teams、Matrix、Mattermost、Nostr 等
+- Microsoft Teams、Matrix、Mattermost、Nostr、QQ Bot 等
 - 可以自行开发新的通道插件
 
 ### 1.2.3 Agent（智能体）
@@ -173,9 +173,10 @@ mindmap
       代码执行
     自动化
       定时任务 Cron
-      Lobster 工作流
-      Webhook
-      技能系统 Skills
+      Heartbeat 心跳
+      Hooks 钩子
+      Tasks / Task Flow
+      Standing Orders
     安全
       设备配对
       访问控制
@@ -198,8 +199,10 @@ mindmap
 | **工具** | 浏览器自动化 | 网页操作、截图、爬取 |
 | **工具** | Shell 执行 | 在沙盒中运行命令 |
 | **工具** | Web 搜索 | Brave、Perplexity、Gemini 等多个搜索引擎 |
-| **自动化** | 定时任务 | Cron 表达式驱动的周期性任务 |
-| **自动化** | Lobster 工作流 | 复杂工作流编排引擎 |
+| **自动化** | 定时任务 | Cron 表达式驱动的精确定时任务 |
+| **自动化** | Heartbeat | 近实时、上下文感知的周期性主会话检查 |
+| **自动化** | Hooks | 事件驱动自动化，响应 `/new`、`/reset`、工具调用等 |
+| **自动化** | Tasks / Task Flow | 后台任务台账与多步骤持久工作流 |
 | **记忆** | 向量搜索 | 基于 embedding 的语义记忆检索 |
 | **记忆** | 日志记忆 | 每日/长期记忆文件自动管理 |
 | **语音** | TTS/STT | 文字转语音、语音转文字 |

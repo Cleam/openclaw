@@ -13,12 +13,12 @@
 | [03](./03-quickstart.md) | **快速上手指南** | 5 分钟上手、Onboard 引导流程、发送第一条消息 |
 | [04](./04-architecture.md) | **系统架构详解** | Gateway 架构、WebSocket 协议、设备配对、数据流 |
 | [05](./05-configuration.md) | **配置文件详解** | openclaw.json 结构、配置方式、常用配置项 |
-| [06](./06-channels.md) | **消息通道配置** | WhatsApp、Telegram、Discord 等通道的接入 |
-| [07](./07-agents.md) | **Agent 智能体系统** | 工作区、引导文件、多 Agent 路由、技能系统 |
+| [06](./06-channels.md) | **消息通道配置** | WhatsApp、Telegram、Discord、QQ Bot 等通道的接入 |
+| [07](./07-agents.md) | **Agent 智能体系统** | 工作区、引导文件、多 Agent 路由、记忆与技能系统 |
 | [08](./08-models.md) | **模型配置与管理** | 模型选择、Fallback 机制、CLI 管理、别名系统 |
 | [09](./09-sessions.md) | **会话管理** | 会话键映射、生命周期、DM 隔离、自动清理 |
 | [10](./10-plugins.md) | **插件开发指南** | Plugin SDK、插件类型、开发流程、注册 API |
-| [11](./11-tools.md) | **工具与自动化** | 内置工具、Slash 命令、Skills、Lobster 工作流 |
+| [11](./11-tools.md) | **工具与自动化** | 内置工具、Slash 命令、Cron、Hooks、Tasks、Skills |
 | [12](./12-security.md) | **安全配置** | 信任模型、访问控制、沙盒隔离、安全审计 |
 | [13](./13-deployment.md) | **部署方案** | Docker 部署、云服务部署、远程访问 |
 | [14](./14-contributing.md) | **参与贡献指南** | 开发环境、PR 规范、代码风格、社区参与 |
@@ -55,5 +55,5 @@ flowchart TD
 
 - 本教程为中文编写，专业术语保留英文原文并附中文解释
 - 代码示例和配置项均来自官方文档和源码
-- 教程内容基于 OpenClaw 2026.3 版本，后续版本可能有所变化
+- 教程内容已按 `origin/main` 上游文档补充到 **OpenClaw 2026.4.7** 左右的能力面，后续版本仍可能继续变化
 - 如有疑问，请以 [官方文档](https://docs.openclaw.ai) 为准

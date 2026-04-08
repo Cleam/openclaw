@@ -52,7 +52,7 @@ flowchart TD
 | Gateway 模式 | 本地回环（loopback） | 可自定义 |
 | 端口 | 18789 | 可自定义 |
 | 认证 | Token 认证 | 可选多种模式 |
-| DM 策略 | allowlist（白名单） | 可自定义 |
+| DM 策略 | pairing（配对） | 可自定义 |
 | Tailscale | 关闭 | 可开启 |
 
 ### Onboard 各步骤详解
@@ -111,6 +111,7 @@ Onboard 会根据你的操作系统自动安装对应的守护进程：
 |----------|-------------|------|
 | macOS | LaunchAgent | 用户级别的 launchd 服务 |
 | Linux/WSL2 | systemd user unit | 用户级别的 systemd 服务 |
+| Windows（原生） | 视安装方式而定 | 推荐先用 Onboard 完成基础配置 |
 
 ## 3.3 启动 Gateway
 
@@ -139,6 +140,16 @@ openclaw dashboard
 ```
 
 Web 控制台默认地址：http://127.0.0.1:18789/
+
+### 默认安全行为（新手非常重要）
+
+OpenClaw 连接的是真实聊天平台，所以默认会把很多入站私聊视为“不完全可信输入”：
+
+- Telegram / WhatsApp / Signal / iMessage / Discord / Slack / Google Chat / Microsoft Teams 等通道，默认更推荐使用 **`dmPolicy: "pairing"`**
+- 未配对的新发送者会先收到一个短配对码
+- 只有你执行 `openclaw pairing approve <channel> <code>` 之后，消息才会正式进入助手上下文
+
+这套机制的意义非常大：**它能防止任何陌生人直接把你的 AI 助手“当成公开机器人来用”**。
 
 ## 3.4 发送第一条消息
 
@@ -169,6 +180,7 @@ openclaw message send --to +1234567890 --message "Hello from OpenClaw"
 openclaw --version                     # 查看版本
 openclaw doctor                        # 运行诊断
 openclaw dashboard                     # 打开 Web 控制台
+openclaw docs                          # 打开文档入口
 
 # === Gateway 管理 ===
 openclaw gateway status                # 查看 Gateway 状态
@@ -202,6 +214,13 @@ openclaw agents add <name>             # 添加新 Agent
 # === 会话管理 ===
 openclaw status                        # 查看会话状态
 openclaw sessions --json               # 导出会话数据
+openclaw memory status                 # 查看记忆索引状态
+
+# === 自动化与扩展 ===
+openclaw hooks list                    # 查看可用 hooks
+openclaw cron list                     # 查看定时任务
+openclaw plugins list                  # 查看插件
+openclaw skills list                   # 查看技能
 
 # === 守护进程管理 ===
 openclaw daemon install                # 安装守护进程

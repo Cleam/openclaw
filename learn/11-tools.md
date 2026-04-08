@@ -6,7 +6,11 @@
 
 ## 11.1 工具概述
 
-OpenClaw 的 Agent 可以使用多种工具来完成任务。工具（Tool）是 Agent 在对话中可以调用的能力模块：
+OpenClaw 的 Agent 可以使用多种工具来完成任务。工具（Tool）是 Agent 在对话中可以调用的能力模块。
+
+但在新版文档体系里，一个更准确的理解是：
+
+> **Tools 负责“做事”，Automation 负责“什么时候做、为什么做、做完怎么追踪”。**
 
 ```mermaid
 mindmap
@@ -36,8 +40,11 @@ mindmap
       tts 语音合成
       reactions 消息反应
     自动化类
-      lobster 工作流
       cron 定时任务
+      heartbeat 心跳
+      hooks 钩子
+      tasks 后台任务
+      task flow 工作流
       skills 技能系统
 ```
 
@@ -147,7 +154,82 @@ OpenClaw 支持多个搜索引擎，Agent 可以实时搜索网络信息：
 | **Tavily** | AI 研究助手 | API Key |
 | **Firecrawl** | 网页爬取 + 结构化 | API Key |
 
-## 11.6 技能系统（Skills）
+## 11.6 Automation & Tasks（新版重点）
+
+新版 OpenClaw 文档把自动化拆得更清楚了。你可以用下面这个思路理解：
+
+```mermaid
+flowchart TD
+    START([我想让 OpenClaw 自动做事]) --> Q1{需要精确时间吗？}
+    START --> Q2{需要追踪后台任务吗？}
+    START --> Q3{需要响应事件吗？}
+    START --> Q4{需要永久性的规则吗？}
+
+    Q1 -->|是| CRON[Cron / Scheduled Tasks]
+    Q1 -->|否| HEARTBEAT[Heartbeat]
+    Q2 -->|是| TASKS[Tasks / Task Flow]
+    Q3 -->|是| HOOKS[Hooks]
+    Q4 -->|是| SO[Standing Orders]
+```
+
+### 这几个概念怎么区分？
+
+| 能力 | 你可以把它理解成 | 最适合做什么 |
+|------|------------------|--------------|
+| **Cron** | 定时闹钟 | “每天 9 点发日报” |
+| **Heartbeat** | 周期巡检 | “每 30 分钟检查一次是否有新动态” |
+| **Hooks** | 事件触发器 | “当 `/reset` 发生时自动保存上下文” |
+| **Tasks** | 后台任务台账 | “我要看到哪些后台工作正在跑、跑完没” |
+| **Task Flow** | 多步骤工作流 | “调研 → 分析 → 汇总 → 发送结果” |
+| **Standing Orders** | 持久操作规则 | “每次回复前都检查合规要求” |
+
+### Cron vs Heartbeat
+
+| 维度 | Cron | Heartbeat |
+|------|------|-----------|
+| 时间精度 | 高，适合精确调度 | 较灵活，适合周期巡检 |
+| 上下文 | 可隔离，也可绑定已有会话 | 通常走主会话上下文 |
+| 是否生成任务记录 | 会 | 通常不会 |
+| 适合场景 | 日报、提醒、定时汇总 | 收件箱检查、日历提醒、轮询观察 |
+
+## 11.7 Hooks（事件驱动自动化）
+
+Hooks 是新版文档里非常值得学习的一块。它的本质是：
+
+> **当某个事件发生时，运行一段本地脚本。**
+
+典型事件包括：
+
+- `/new`
+- `/reset`
+- `/stop`
+- agent bootstrap
+- 工具调用前后
+- 消息发送前后
+
+常见用途：
+
+- 在 `/new` / `/reset` 时保存记忆快照
+- 记录命令日志做审计
+- 在特定工具调用前做权限检查
+- 给工作区自动补充额外文件
+
+CLI 例子：
+
+```bash
+openclaw hooks list
+openclaw hooks enable session-memory
+openclaw hooks check
+openclaw hooks info session-memory
+```
+
+Bundled hooks 中比较值得记住的有：
+
+- `session-memory`：在 `/new` 或 `/reset` 时保存上下文到工作区记忆
+- `bootstrap-extra-files`：在 bootstrap 时额外注入文件
+- `command-logger`：记录命令日志
+
+## 11.8 技能系统（Skills）
 
 Skills 是比工具更高层次的能力模块，定义了 Agent 在特定领域的专长和行为模式。
 
@@ -197,9 +279,9 @@ Skills 是比工具更高层次的能力模块，定义了 Agent 在特定领域
 - ✅ 亮点
 ```
 
-## 11.7 Lobster 工作流引擎
+## 11.9 Task Flow / Lobster 工作流
 
-Lobster 是 OpenClaw 的工作流编排引擎，支持复杂的多步骤自动化：
+Lobster 可以把它理解成 OpenClaw 的复杂工作流编排能力；而新版文档更强调它上层的 **Task Flow** 概念，用来管理可持久追踪的多步骤流程：
 
 ```mermaid
 flowchart TD
@@ -214,29 +296,52 @@ flowchart TD
     STEP4 --> END[完成]
 ```
 
-## 11.8 定时任务（Cron）
+## 11.10 定时任务（Cron）
 
-OpenClaw 支持 Cron 表达式驱动的周期性任务：
+OpenClaw 支持 Cron 表达式驱动的周期性任务，而且新版设计已经比“普通 Linux cron”更接近“AI 调度器”：
 
-```json5
-{
-  cron: {
-    jobs: [
-      {
-        id: "daily-summary",
-        schedule: "0 9 * * *",           // 每天早上 9 点
-        message: "请生成今天的工作总结",
-        agentId: "work"                   // 发给哪个 Agent
-      },
-      {
-        id: "weekly-report",
-        schedule: "0 17 * * 5",          // 每周五下午 5 点
-        message: "生成本周工作报告"
-      }
-    ]
-  }
-}
+- 可以跑在 **main session**
+- 可以跑在 **isolated session**
+- 可以绑定 **current session**
+- 也可以发到 **自定义 persistent session**
+- 可以选择 **announce / webhook / none** 三种交付方式
+
+```bash
+# 一次性提醒
+openclaw cron add \
+  --name "Reminder" \
+  --at "2026-05-01T16:00:00Z" \
+  --session main \
+  --system-event "Reminder: check the docs update" \
+  --wake now \
+  --delete-after-run
+
+# 每天 7 点定时摘要
+openclaw cron add \
+  --name "Morning brief" \
+  --cron "0 7 * * *" \
+  --tz "America/Los_Angeles" \
+  --session isolated \
+  --message "Summarize overnight updates." \
+  --announce
 ```
+
+### Cron 运行位置怎么理解？
+
+| sessionTarget | 作用 |
+|---------------|------|
+| `main` | 进入主会话，适合“像平时聊天一样继续思考” |
+| `isolated` | 独立的 `cron:<jobId>` 会话，不污染主会话 |
+| `current` | 绑定创建任务时所在的会话 |
+| `session:custom-id` | 绑定到一个长期存在的自定义会话 |
+
+### 交付方式（delivery）
+
+| mode | 说明 |
+|------|------|
+| `announce` | 任务完成后把结果发回目标聊天 |
+| `webhook` | 任务完成后 POST 到指定 URL |
+| `none` | 静默运行，只在内部留痕 |
 
 ### Cron 表达式速查
 
@@ -258,7 +363,29 @@ OpenClaw 支持 Cron 表达式驱动的周期性任务：
 | `0 9,18 * * *` | 每天 9:00 和 18:00 |
 | `*/30 * * * *` | 每 30 分钟 |
 
-## 11.9 工具安全策略
+## 11.11 CLI 参考入口（补充）
+
+新版 CLI 文档页把命令树整理得更完整了。除了你常见的 `config / models / channels / pairing`，现在也建议记住这些入口：
+
+```bash
+openclaw docs
+openclaw hooks ...
+openclaw webhooks ...
+openclaw memory ...
+openclaw sandbox ...
+openclaw approvals ...
+openclaw security ...
+openclaw secrets ...
+```
+
+全局参数里也有两个很实用：
+
+- `--dev`：把状态隔离到 `~/.openclaw-dev`
+- `--profile <name>`：把状态隔离到 `~/.openclaw-<name>`
+
+这两个参数对你同时维护“正式环境 / 测试环境 / 演示环境”特别有帮助。
+
+## 11.12 工具安全策略
 
 ### 工具配置文件（Profile）
 
@@ -290,7 +417,7 @@ group:runtime     → 运行时工具（exec 等）
 group:fs          → 文件系统工具（read、write、edit 等）
 ```
 
-## 11.10 本章小结
+## 11.13 本章小结
 
 | 类别 | 代表工具 | 用途 |
 |------|----------|------|
@@ -298,7 +425,8 @@ group:fs          → 文件系统工具（read、write、edit 等）
 | **搜索** | brave-search, web-fetch | 网络搜索、HTTP 请求 |
 | **浏览器** | browser | 网页自动化 |
 | **协作** | agent-send, subagents | Agent 间通信 |
-| **自动化** | cron, lobster | 定时任务、工作流 |
+| **自动化** | cron, heartbeat, hooks, tasks | 调度、事件响应、后台任务追踪 |
+| **工作流** | task flow, lobster | 多步骤流程编排 |
 | **技能** | skills | 领域专长定义 |
 | **命令** | /model, /status, /new | 用户直接控制 |
 
