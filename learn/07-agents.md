@@ -64,7 +64,7 @@ flowchart TD
     FILE[引导文件] --> CHECK{文件状态？}
     CHECK -->|空白文件| SKIP[跳过不注入]
     CHECK -->|文件过大| TRIM[裁剪 + 截断标记]
-    CHECK -->|文件不存在| MARKER[注入 "missing file" 标记]
+    CHECK -->|文件不存在| MARKER[注入 'missing file' 标记]
     CHECK -->|正常文件| INJECT[完整注入上下文]
 ```
 
