@@ -1058,7 +1058,7 @@
 | `agents.list.*.tools.exec.applyPatch.enabled` | 布尔值 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.applyPatch.enabled` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `agents.list.*.tools.exec.applyPatch.workspaceOnly` | 布尔值 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.applyPatch.workspaceOnly` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `agents.list.*.tools.exec.approvalRunningNoticeMs` | 整数 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.approvalRunningNoticeMs` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
-| `agents.list.*.tools.exec.ask` | 字符串 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.ask` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
+| `agents.list.*.tools.exec.ask` | 字符串 | 否 | 否 | 否 | 按需 | 针对特定 Agent 的 exec 审批策略，覆盖全局 `tools.exec.ask`。合法值：`"off"`、`"on-miss"`（默认）、`"always"`。 | — |
 | `agents.list.*.tools.exec.backgroundMs` | 整数 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.backgroundMs` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `agents.list.*.tools.exec.cleanupMs` | 整数 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.cleanupMs` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `agents.list.*.tools.exec.host` | 字符串 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.host` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
@@ -1079,7 +1079,7 @@
 | `agents.list.*.tools.exec.safeBinTrustedDirs.*` | 字符串 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.safeBinTrustedDirs.*` 表示通配项/动态键位，用来给多个条目批量声明值。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `agents.list.*.tools.exec.safeBins` | 数组 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.safeBins` 是一个数组配置块，用来组织同一功能域下的子配置。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `agents.list.*.tools.exec.safeBins.*` | 字符串 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.safeBins.*` 表示通配项/动态键位，用来给多个条目批量声明值。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
-| `agents.list.*.tools.exec.security` | 字符串 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.security` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
+| `agents.list.*.tools.exec.security` | 字符串 | 否 | 否 | 否 | 按需 | 针对特定 Agent 的 exec 安全级别，覆盖全局 `tools.exec.security`。合法值：`"deny"`、`"allowlist"`、`"full"`。 | — |
 | `agents.list.*.tools.exec.strictInlineEval` | 布尔值 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.strictInlineEval` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `agents.list.*.tools.exec.timeoutSec` | 整数 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.exec.timeoutSec` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `agents.list.*.tools.fs` | 对象 | 否 | 否 | 否 | 按需 | `agents.list.*.tools.fs` 是一个对象配置块，用来组织同一功能域下的子配置。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
@@ -1345,7 +1345,7 @@
 | `tools.exec.applyPatch.allowModels.*` | 字符串 | 否 | 否 | 否 | 按需 | `tools.exec.applyPatch.allowModels.*` 表示通配项/动态键位，用来给多个条目批量声明值。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `tools.exec.applyPatch.enabled` | 布尔值 | 否 | 否 | 否 | 按需 | `tools.exec.applyPatch.enabled` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | Experimental. Enables apply_patch for OpenAI models when allowed by tool policy. |
 | `tools.exec.applyPatch.workspaceOnly` | 布尔值 | 否 | 否 | 否 | 高级按需 | `tools.exec.applyPatch.workspaceOnly` 用来设置该路径对应的具体行为或参数。 大多数用户保持默认；只有在高级调优、复杂部署或排障时再改。 | Restrict apply_patch paths to the workspace directory (default: true). Set false to allow writing outside the workspace (dangerous). |
-| `tools.exec.ask` | 字符串 | 否 | 否 | 否 | 按需 | `tools.exec.ask` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | Approval strategy for when exec commands require human confirmation before running. Use stricter ask behavior in shared channels and lower-friction settings in private operator contexts. |
+| `tools.exec.ask` | 字符串 | 否 | 否 | 否 | 按需 | `tools.exec.ask` 控制 exec 命令执行前是否需要用户确认。合法值：`"off"`（无需确认）、`"on-miss"`（缓存未命中时确认，默认）、`"always"`（每次都确认）。在共享通道中建议使用更严格的策略，私有场景可适当放宽。 | Approval strategy for when exec commands require human confirmation before running. Use stricter ask behavior in shared channels and lower-friction settings in private operator contexts. |
 | `tools.exec.backgroundMs` | 整数 | 否 | 否 | 否 | 按需 | `tools.exec.backgroundMs` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `tools.exec.cleanupMs` | 整数 | 否 | 否 | 否 | 按需 | `tools.exec.cleanupMs` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `tools.exec.host` | 字符串 | 否 | 否 | 否 | 按需 | `tools.exec.host` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | Selects execution host strategy for shell commands, typically controlling local vs delegated execution environment. Use the safest host mode that still satisfies your automation requirements. |
@@ -1366,7 +1366,7 @@
 | `tools.exec.safeBinTrustedDirs.*` | 字符串 | 否 | 否 | 否 | 按需 | `tools.exec.safeBinTrustedDirs.*` 表示通配项/动态键位，用来给多个条目批量声明值。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 | `tools.exec.safeBins` | 数组 | 否 | 否 | 否 | 按需 | `tools.exec.safeBins` 是一个数组配置块，用来组织同一功能域下的子配置。 不确定时保持默认即可；只有你明确知道需求时再配置。 | Allow stdin-only safe binaries to run without explicit allowlist entries. |
 | `tools.exec.safeBins.*` | 字符串 | 否 | 否 | 否 | 按需 | `tools.exec.safeBins.*` 表示通配项/动态键位，用来给多个条目批量声明值。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
-| `tools.exec.security` | 字符串 | 否 | 否 | 否 | 按需 | `tools.exec.security` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | Execution security posture selector controlling sandbox/approval expectations for command execution. Keep strict security mode for untrusted prompts and relax only for trusted operator workflows. |
+| `tools.exec.security` | 字符串 | 否 | 否 | 否 | 按需 | `tools.exec.security` 控制命令执行的安全级别。合法值：`"deny"`（禁止执行）、`"allowlist"`（仅白名单命令可执行）、`"full"`（允许所有命令）。面对不受信任的提示词时保持严格模式，仅在受信任的操作者工作流中放宽。 | Execution security posture selector controlling sandbox/approval expectations for command execution. Keep strict security mode for untrusted prompts and relax only for trusted operator workflows. |
 | `tools.exec.strictInlineEval` | 布尔值 | 否 | 否 | 否 | 按需 | `tools.exec.strictInlineEval` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | Require explicit approval for interpreter inline-eval forms such as `python -c`, `node -e`, `ruby -e`, or `osascript -e`. Prevents silent allowlist reuse and downgrades allow-always to ask-each-time for those forms. |
 | `tools.exec.timeoutSec` | 整数 | 否 | 否 | 否 | 按需 | `tools.exec.timeoutSec` 用来设置该路径对应的具体行为或参数。 不确定时保持默认即可；只有你明确知道需求时再配置。 | — |
 

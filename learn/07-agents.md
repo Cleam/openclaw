@@ -145,7 +145,9 @@ flowchart TD
 
 默认通常是：
 
-- **memory slot**：`memory-core`
+- **memory slot**：`memory-core`（内置记忆引擎）
+- 如果需要基于向量数据库的高级记忆搜索，可切换到 `memory-lancedb`（基于 LanceDB，支持 OpenAI embedding）
+- 切换方式：`plugins.slots.memory = "memory-lancedb"`，并在插件配置中提供 embedding API Key
 - 如果你想完全关闭记忆插件，可设置 `plugins.slots.memory = "none"`
 
 ### 记忆工具

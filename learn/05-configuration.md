@@ -174,8 +174,8 @@ code ~/.openclaw/openclaw.json
     allow: [],                 // 允许的工具列表
     deny: [],                  // 禁止的工具列表
     exec: {
-      security: "ask",         // "allow" | "ask" | "deny"
-      ask: "first"             // "always" | "first"
+      security: "allowlist",   // "deny" | "allowlist" | "full"
+      ask: "on-miss"           // "off" | "on-miss" | "always"
     },
     fs: {
       workspaceOnly: false
@@ -294,8 +294,8 @@ code ~/.openclaw/openclaw.json
 
     // Shell 执行控制
     exec: {
-      security: "ask",      // "allow" | "ask" | "deny"
-      ask: "first"           // "always" | "first"
+      security: "allowlist",  // "deny" | "allowlist" | "full"
+      ask: "on-miss"          // "off" | "on-miss" | "always"
     },
 
     // 文件系统限制
