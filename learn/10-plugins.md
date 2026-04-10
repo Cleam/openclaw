@@ -313,11 +313,11 @@ export default defineChannelPluginEntry({
 });
 ```
 
-这就是这次用户特别点名的地方：
+这里有一个容易混淆的地方值得单独说明：
 
-- **Channel 插件入口**现在很常见的写法是 `registerFull(api)`
-- 但这不是说所有插件都从 `register(api)` 改成 `registerFull(api)`
-- 正确说法是：**`defineChannelPluginEntry(...)` 支持 `registerFull(api)`，非 Channel 插件仍然用 `register(api)`**
+- **Channel 插件入口**常见写法是 `registerFull(api)`，用于在完整启动时注册 CLI、服务等重量级能力
+- 这不意味着所有插件都要把 `register(api)` 改成 `registerFull(api)`
+- 区别在于：**`defineChannelPluginEntry(...)` 支持 `registerFull(api)`；非 Channel 插件仍然使用 `register(api)`**
 
 ### 第三步：可选的 `setup-entry.ts`
 
@@ -482,7 +482,7 @@ register(api) {
 | `"setup-only"`    | 仅用于 setup / onboarding | 只保留最轻量的 channel 注册 |
 | `"setup-runtime"` | setup 时但带运行时        | channel + 轻量运行时能力    |
 
-这就是为什么 Channel 插件的“完整能力”通常放到 `registerFull(api)`，而不是无条件注册：这样 setup 阶段不会把过重的 CLI / service / HTTP 路由全拉起来。
+Channel 插件的"完整能力"之所以放在 `registerFull(api)` 里，而不是无条件注册，是为了让 setup 阶段可以跳过过重的 CLI / service / HTTP 路由，只拉起最轻量的 channel 注册即可。
 
 ## 10.9 `api` 对象常用字段
 
