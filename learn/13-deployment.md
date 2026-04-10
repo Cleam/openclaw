@@ -151,13 +151,13 @@ services:
 ```mermaid
 flowchart LR
     subgraph 主机
-        H_CONFIG[~/.openclaw/]
-        H_WORKSPACE[~/.openclaw/workspace]
+        H_CONFIG["~/.openclaw/"]
+        H_WORKSPACE["~/.openclaw/workspace"]
     end
 
     subgraph Docker 容器
-        C_CONFIG[/home/node/.openclaw]
-        C_WORKSPACE[/home/node/.openclaw/workspace]
+        C_CONFIG["/home/node/.openclaw"]
+        C_WORKSPACE["/home/node/.openclaw/workspace"]
     end
 
     H_CONFIG -->|bind mount| C_CONFIG
