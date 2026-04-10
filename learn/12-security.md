@@ -341,7 +341,7 @@ openclaw config set channels.discord.token \
 {
   gateway: { mode: "local", bind: "loopback", auth: { mode: "token" } },
   session: { dmScope: "main" },
-  tools: { profile: "coding", exec: { security: "ask", ask: "first" } },
+  tools: { profile: "coding", exec: { security: "allowlist", ask: "on-miss" } },
   channels: {
     whatsapp: { dmPolicy: "pairing" },
     telegram: { dmPolicy: "pairing" }
@@ -397,7 +397,7 @@ openclaw config set channels.discord.token \
 | **DM 控制** | `channels.*.dmPolicy` | `pairing` |
 | **群聊控制** | `groups.*.requireMention` | `true` |
 | **会话隔离** | `session.dmScope` | `per-channel-peer` |
-| **工具限制** | `tools.exec.security` | `ask` 或 `deny` |
+| **工具限制** | `tools.exec.security` | `allowlist` 或 `deny` |
 | **文件限制** | `tools.fs.workspaceOnly` | `true` |
 | **沙盒** | `agents.defaults.sandbox.mode` | `non-main` 或 `all` |
 

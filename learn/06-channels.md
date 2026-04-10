@@ -34,6 +34,7 @@ flowchart TB
         TL[Tlon]
         TW[Twitch]
         ZA[Zalo]
+        ZU[Zalo User]
         QQ[QQ Bot]
     end
 

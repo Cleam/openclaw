@@ -92,10 +92,17 @@ Bot:  ✓ 上下文已压缩
 
 ```mermaid
 flowchart LR
-    EXEC[exec 工具调用] --> POLICY{安全策略}
-    POLICY -->|allow| RUN[直接执行]
-    POLICY -->|ask| PROMPT[请求用户确认]
-    POLICY -->|deny| BLOCK[拒绝执行]
+    EXEC[exec 工具调用] --> SEC{security 策略}
+    SEC -->|full| RUN[直接执行]
+    SEC -->|allowlist| CHECK{命令在白名单？}
+    SEC -->|deny| BLOCK[拒绝执行]
+    CHECK -->|是| ASK{ask 策略}
+    CHECK -->|否| BLOCK
+    ASK -->|off| RUN
+    ASK -->|on-miss| CACHE{缓存中有审批？}
+    ASK -->|always| PROMPT[请求用户确认]
+    CACHE -->|有| RUN
+    CACHE -->|无| PROMPT
     PROMPT -->|用户批准| RUN
     PROMPT -->|用户拒绝| BLOCK
 ```
@@ -106,21 +113,28 @@ flowchart LR
 {
   tools: {
     exec: {
-      security: "ask",     // "allow" | "ask" | "deny"
-      ask: "first"          // "always"（每次都问）| "first"（首次确认后自动）
+      security: "allowlist",  // "deny" | "allowlist" | "full"
+      ask: "on-miss"          // "off" | "on-miss" | "always"
     }
   }
 }
 ```
 
-### 审批模式
+### security 策略
 
-| 模式 | 说明 | 适用场景 |
+| 值 | 说明 | 适用场景 |
 |------|------|----------|
-| `allow` | 自动允许所有执行 | 完全信任环境 |
-| `ask` + `first` | 首次需要确认，之后自动 | 日常开发 |
-| `ask` + `always` | 每次都需要确认 | 安全敏感环境 |
-| `deny` | 完全禁止 | 最严格安全要求 |
+| `"deny"` | 完全禁止命令执行 | 最严格安全要求 |
+| `"allowlist"` | 仅白名单内命令可执行 | 日常开发（默认） |
+| `"full"` | 允许所有命令执行 | 完全信任环境 |
+
+### ask 审批策略
+
+| 值 | 说明 | 适用场景 |
+|------|------|----------|
+| `"off"` | 不需要用户确认 | 全自动工作流 |
+| `"on-miss"` | 首次执行需确认，缓存命中后自动通过 | 日常开发（默认） |
+| `"always"` | 每次执行都需要用户确认 | 安全敏感环境 |
 
 ## 11.4 浏览器自动化
 
