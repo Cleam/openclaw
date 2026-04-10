@@ -86,7 +86,7 @@ my-plugin/
 {
   "id": "my-plugin",
   "name": "My Plugin",
-  "description": "Adds a custom tool to OpenClaw",
+  "description": "为 OpenClaw 添加自定义工具",
   "configSchema": {
     "type": "object",
     "additionalProperties": false
@@ -103,7 +103,7 @@ import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 export default definePluginEntry({
   id: "my-plugin",
   name: "My Plugin",
-  description: "Adds a custom tool to OpenClaw",
+  description: "为 OpenClaw 添加自定义工具",
   register(api) {
     api.registerTool({
       name: "my_tool",
@@ -300,7 +300,7 @@ import { acmeChatPlugin } from "./src/channel.js";
 export default defineChannelPluginEntry({
   id: "acme-chat",
   name: "Acme Chat",
-  description: "Acme Chat channel plugin",
+  description: "Acme Chat 通道插件",
   plugin: acmeChatPlugin,
   registerFull(api) {
     api.registerCli(
@@ -343,7 +343,7 @@ import { createProviderApiKeyAuthMethod } from "openclaw/plugin-sdk/provider-aut
 export default definePluginEntry({
   id: "acme-ai",
   name: "Acme AI",
-  description: "Acme AI model provider",
+  description: "Acme AI 模型提供商",
   register(api) {
     api.registerProvider({
       id: "acme-ai",
