@@ -17,6 +17,7 @@
 | 09 | [Agent 配置与多 Agent 实践](./09-agent-config.md) | 单 Agent 配置、多 Agent 路由和实战案例 |
 | 10 | [消息渠道接入指南](./10-channels.md) | 内置渠道、插件渠道和典型配置示例 |
 | 11 | [不同用户场景最佳配置推荐](./11-best-practices.md) | 个人开发者、团队、安全敏感场景配置参考 |
+| 12 | [多 Agent 软件开发团队实施方案](./12-multi-agent-dev-team.md) | 6 Agent 团队结构、Lead 编排模式、完整配置和 Skill 实现 |
 
 ## 🎯 适合谁阅读
 
@@ -24,7 +25,7 @@
 - **想快速跑起来** → 直达 [03-快速上手指南](./03-getting-started.md)
 - **想深入配置** → 阅读 [04-配置详解](./04-configuration.md) + [05-安全配置](./05-security.md)
 - **想节省 Token 费用** → 必读 [08-Token 节省](./08-token-saving.md)
-- **想搭建多 Agent 系统** → 参见 [09-Agent 配置](./09-agent-config.md)
+- **想搭建多 Agent 系统** → 参见 [09-Agent 配置](./09-agent-config.md) 和 [12-多 Agent 开发团队](./12-multi-agent-dev-team.md)
 - **想连接各种聊天平台** → 参见 [10-渠道接入](./10-channels.md)
 
 ## 📋 前置要求
